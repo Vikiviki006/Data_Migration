@@ -12,8 +12,7 @@ import {
 } from "./ai/schemas/schemadesign_zod";
 
 export type AIInput = {
-    selected_schema: typeof schemaInput.selected_schema;
-    current_design: typeof schemaInput.current_design;
+    selected_schema: typeof schemaInput;
     user_query: string;
 };
 
@@ -25,14 +24,9 @@ async function main(): Promise<void> {
     console.log("==============================");
 
     const aiInput: AIInput = {
-        selected_schema:
-            schemaInput.selected_schema,
+        selected_schema: schemaInput,
 
-        current_design:
-            schemaInput.current_design,
-
-        user_query:
-            userQuery.user_query
+        user_query: userQuery.user_query
     };
 
     console.log("");
@@ -43,12 +37,13 @@ async function main(): Promise<void> {
         of aiInput.selected_schema.tables
     ) {
         console.log(
-            `- ${table.name}`
+            `- ${table.tableName}`
         );
     }
 
     console.log("");
     console.log("User Query:");
+
     console.log(
         aiInput.user_query
     );

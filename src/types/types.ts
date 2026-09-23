@@ -4,3 +4,8 @@ export type EnvConfig = {
     groqApiKey: string;
     groqModel: string;
 };
+export type SchemaDesignInput = {
+    selected_schema: unknown;
+    current_design?: unknown;
+    user_query: string;
+};

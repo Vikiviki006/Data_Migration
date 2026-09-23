@@ -1,110 +1,99 @@
 {
-  "selected_schema": {
-    "database": "oracle",
-    "schema": "APP",
-    "tables": [
-      {
-        "name": "CUSTOMER",
-        "domain": "customer",
+  "tables": [
+    {
+      "tableName": "DEPARTMENTS",
+      "columns": [
+        {
+          "columnName": "DEPARTMENT_ID",
+          "dataType": "NUMBER",
+          "dataLength": 22,
+          "dataPrecision": 4,
+          "dataScale": 0,
+          "nullable": "N",
+          "dataDefault": null,
+          "columnId": 1
+        },
+        {
+          "columnName": "DEPARTMENT_NAME",
+          "dataType": "VARCHAR2",
+          "dataLength": 30,
+          "dataPrecision": null,
+          "dataScale": null,
+          "nullable": "N",
+          "dataDefault": null,
+          "columnId": 2
+        },
+        {
+          "columnName": "MANAGER_ID",
+          "dataType": "NUMBER",
+          "dataLength": 22,
+          "dataPrecision": 6,
+          "dataScale": 0,
+          "nullable": "Y",
+          "dataDefault": null,
+          "columnId": 3
+        }
+      ],
+      "primaryKey": {
+        "constraintName": "DEPT_PK",
         "columns": [
-          {
-            "name": "CUSTOMER_ID",
-            "source_type": "NUMBER",
-            "precision": 19,
-            "scale": 0,
-            "nullable": false,
-            "domain": "identifier",
-            "role": "primary_key"
-          },
-          {
-            "name": "NAME",
-            "source_type": "VARCHAR2",
-            "length": 200,
-            "nullable": false,
-            "domain": "person",
-            "role": "attribute"
-          },
-          {
-            "name": "EMAIL",
-            "source_type": "VARCHAR2",
-            "length": 255,
-            "nullable": true,
-            "domain": "contact",
-            "role": "attribute"
-          },
-          {
-            "name": "PHONE",
-            "source_type": "VARCHAR2",
-            "length": 20,
-            "nullable": true,
-            "domain": "contact",
-            "role": "attribute"
-          }
-        ],
-        "primary_key": [
-          "CUSTOMER_ID"
-        ],
-        "foreign_keys": []
-      },
-      {
-        "name": "ORDERS",
-        "domain": "order",
-        "columns": [
-          {
-            "name": "ORDER_ID",
-            "source_type": "NUMBER",
-            "precision": 19,
-            "scale": 0,
-            "nullable": false,
-            "domain": "identifier",
-            "role": "primary_key"
-          },
-          {
-            "name": "CUSTOMER_ID",
-            "source_type": "NUMBER",
-            "precision": 19,
-            "scale": 0,
-            "nullable": false,
-            "domain": "reference",
-            "role": "foreign_key"
-          },
-          {
-            "name": "ORDER_AMOUNT",
-            "source_type": "NUMBER",
-            "precision": 15,
-            "scale": 2,
-            "nullable": false,
-            "domain": "currency",
-            "role": "attribute"
-          }
-        ],
-        "primary_key": [
-          "ORDER_ID"
-        ],
-        "foreign_keys": [
-          {
-            "columns": [
-              "CUSTOMER_ID"
-            ],
-            "references": {
-              "table": "CUSTOMER",
-              "columns": [
-                "CUSTOMER_ID"
-              ]
-            }
-          }
+          "DEPARTMENT_ID"
         ]
-      }
-    ],
-    "relationships": [
-      {
-        "source_table": "ORDERS",
-        "source_column": "CUSTOMER_ID",
-        "target_table": "CUSTOMER",
-        "target_column": "CUSTOMER_ID",
-        "cardinality": "many_to_one"
-      }
-    ]
-  },
-  "current_design": null
+      },
+      "foreignKeys": []
+    },
+    {
+      "tableName": "EMPLOYEE_DETAILS",
+      "columns": [
+        {
+          "columnName": "EMP_ID",
+          "dataType": "NUMBER",
+          "dataLength": 22,
+          "dataPrecision": 6,
+          "dataScale": 0,
+          "nullable": "N",
+          "dataDefault": null,
+          "columnId": 1
+        },
+        {
+          "columnName": "DEPT_ID",
+          "dataType": "NUMBER",
+          "dataLength": 22,
+          "dataPrecision": 4,
+          "dataScale": 0,
+          "nullable": "Y",
+          "dataDefault": null,
+          "columnId": 2
+        },
+        {
+          "columnName": "JOB_PROFILE",
+          "dataType": "VARCHAR2",
+          "dataLength": 50,
+          "dataPrecision": null,
+          "dataScale": null,
+          "nullable": "Y",
+          "dataDefault": null,
+          "columnId": 3
+        }
+      ],
+      "primaryKey": {
+        "constraintName": "EMP_DET_PK",
+        "columns": [
+          "EMP_ID"
+        ]
+      },
+      "foreignKeys": [
+        {
+          "constraintName": "EMP_DEPT_FK",
+          "columns": [
+            "DEPT_ID"
+          ],
+          "referencedTable": "DEPARTMENTS",
+          "referencedColumns": [
+            "DEPARTMENT_ID"
+          ]
+        }
+      ]
+    }
+  ]
 }
