@@ -1,0 +1,3 @@
+{
+  "user_query": "Split EMAIL into a new customer_contact table. Keep CUSTOMER_ID as the relationship key and preserve the ORDERS relationship."
+}

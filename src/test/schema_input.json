@@ -1,0 +1,110 @@
+{
+  "selected_schema": {
+    "database": "oracle",
+    "schema": "APP",
+    "tables": [
+      {
+        "name": "CUSTOMER",
+        "domain": "customer",
+        "columns": [
+          {
+            "name": "CUSTOMER_ID",
+            "source_type": "NUMBER",
+            "precision": 19,
+            "scale": 0,
+            "nullable": false,
+            "domain": "identifier",
+            "role": "primary_key"
+          },
+          {
+            "name": "NAME",
+            "source_type": "VARCHAR2",
+            "length": 200,
+            "nullable": false,
+            "domain": "person",
+            "role": "attribute"
+          },
+          {
+            "name": "EMAIL",
+            "source_type": "VARCHAR2",
+            "length": 255,
+            "nullable": true,
+            "domain": "contact",
+            "role": "attribute"
+          },
+          {
+            "name": "PHONE",
+            "source_type": "VARCHAR2",
+            "length": 20,
+            "nullable": true,
+            "domain": "contact",
+            "role": "attribute"
+          }
+        ],
+        "primary_key": [
+          "CUSTOMER_ID"
+        ],
+        "foreign_keys": []
+      },
+      {
+        "name": "ORDERS",
+        "domain": "order",
+        "columns": [
+          {
+            "name": "ORDER_ID",
+            "source_type": "NUMBER",
+            "precision": 19,
+            "scale": 0,
+            "nullable": false,
+            "domain": "identifier",
+            "role": "primary_key"
+          },
+          {
+            "name": "CUSTOMER_ID",
+            "source_type": "NUMBER",
+            "precision": 19,
+            "scale": 0,
+            "nullable": false,
+            "domain": "reference",
+            "role": "foreign_key"
+          },
+          {
+            "name": "ORDER_AMOUNT",
+            "source_type": "NUMBER",
+            "precision": 15,
+            "scale": 2,
+            "nullable": false,
+            "domain": "currency",
+            "role": "attribute"
+          }
+        ],
+        "primary_key": [
+          "ORDER_ID"
+        ],
+        "foreign_keys": [
+          {
+            "columns": [
+              "CUSTOMER_ID"
+            ],
+            "references": {
+              "table": "CUSTOMER",
+              "columns": [
+                "CUSTOMER_ID"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "source_table": "ORDERS",
+        "source_column": "CUSTOMER_ID",
+        "target_table": "CUSTOMER",
+        "target_column": "CUSTOMER_ID",
+        "cardinality": "many_to_one"
+      }
+    ]
+  },
+  "current_design": null
+}
