@@ -1,132 +1,88 @@
 import "./config/env";
 
-import schemaInput from "./test/schema_input.json";
-import userQuery from "./test/user_query.json";
+import express from "express";
 
-import {
-    generateSchemaDesign
-} from "./ai/ai_serivce";
+import {schemaDesignRouter}
+    from "./routes/schemadesign_route";
 
-import {
-    SchemaDesignResponse
-} from "./ai/schemas/schemadesign_zod";
+const app =
+    express();
 
-export type AIInput = {
-    selected_schema: typeof schemaInput;
-    user_query: string;
-};
+/*
+ * Parse JSON request bodies.
+ */
+app.use(
+    express.json({
+        limit: "10mb"
+    })
+);
 
-async function main(): Promise<void> {
+/*
+ * Schema Design API
+ *
+ * POST /api/schema-design
+ */
+app.use(
+    "/api",
+    schemaDesignRouter
+);
 
-    console.log("");
-    console.log("==============================");
-    console.log("DATABASE SCHEMA AI TEST");
-    console.log("==============================");
+/*
+ * Health check
+ */
+app.get(
+    "/health",
+    (
+        _req,
+        res
+    ): void => {
 
-    const aiInput: AIInput = {
-        selected_schema: schemaInput,
-
-        user_query: userQuery.user_query
-    };
-
-    console.log("");
-    console.log("Selected Tables:");
-
-    for (
-        const table
-        of aiInput.selected_schema.tables
-    ) {
-        console.log(
-            `- ${table.tableName}`
-        );
+        res.status(200).json({
+            success: true,
+            message: "Server is running"
+        });
     }
+);
 
-    console.log("");
-    console.log("User Query:");
-
-    console.log(
-        aiInput.user_query
+/*
+ * PORT
+ */
+const PORT: number =
+    Number(
+        process.env.PORT ?? "3000"
     );
 
-    console.log("");
-    console.log("Sending request...");
-
-    try {
-
-        const response =
-            await generateSchemaDesign(
-                aiInput
-            );
-
-        console.log("");
-        console.log(
-            `Provider: ${response.provider}`
-        );
-
-        /*
-         * Validate the returned AI JSON
-         * using Zod.
-         */
-        const validation =
-            SchemaDesignResponse.safeParse(
-                response.result
-            );
-
-        if (!validation.success) {
-
-            console.error("");
-
-            console.error(
-                "❌ Response validation failed"
-            );
-
-            console.error(
-                validation.error.issues
-            );
-
-            process.exit(1);
-        }
-
-        console.log("");
-
-        console.log(
-            "✅ Strict JSON validated"
-        );
-
-        console.log("");
-
-        console.log(
-            JSON.stringify(
-                validation.data,
-                null,
-                2
-            )
-        );
-
-    } catch (error) {
-
-        console.error("");
-
-        console.error(
-            "❌ AI request failed"
-        );
-
-        console.error(error);
-
-        process.exit(1);
-    }
+if (
+    !Number.isInteger(PORT) ||
+    PORT <= 0
+) {
+    throw new Error(
+        "Invalid PORT configuration"
+    );
 }
 
+/*
+ * Start server
+ */
+app.listen(
+    PORT,
+    (): void => {
 
-main().catch((error: unknown) => {
+        console.log("");
+        console.log("==============================");
+        console.log("DATABASE SCHEMA AI SERVER");
+        console.log("==============================");
 
-    console.error("");
+        console.log(
+            `Server running on http://localhost:${PORT}`
+        );
 
-    console.error(
-        "❌ Application failed"
-    );
+        console.log(
+            `Schema Design API: POST http://localhost:${PORT}/api/schema-design`
+        );
 
-    console.error(error);
-
-    process.exit(1);
-});
+        console.log(
+            `Health Check: GET http://localhost:${PORT}/health`
+        );
+    }
+);
