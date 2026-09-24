@@ -1,3 +1,0 @@
-{
-  "user_query": "Merge DEPARTMENTS and EMPLOYEE_DETAILS into a single EMPLOYEE_DEPARTMENT table, combining all columns from both tables into one table.Remove the existing DEPARTMENTS and EMPLOYEE_DETAILS relationship after the merge while preserving the primary keys."
-}

@@ -6,8 +6,6 @@ import { SchemaDesignResponse } from "../ai/schemas/schemadesign_zod";
 export const schemaDesignRouter = Router();
 
 schemaDesignRouter.post("/schema-design", async (req: Request, res: Response) => {
-
-    // 1. Validate the incoming request body.
     const parsedRequest = SchemaDesignRequest.safeParse(req.body);
 
     if (!parsedRequest.success) {
@@ -18,10 +16,7 @@ schemaDesignRouter.post("/schema-design", async (req: Request, res: Response) =>
     }
 
     try {
-        // 2. Call the AI service (Groq first, Gemini fallback).
         const { provider, result } = await generateSchemaDesign(parsedRequest.data);
-
-        // 3. Validate the AI's output against the response contract.
         const parsedResponse = SchemaDesignResponse.safeParse(result);
         console.log(parsedResponse);
 
@@ -33,8 +28,6 @@ schemaDesignRouter.post("/schema-design", async (req: Request, res: Response) =>
                 provider
             });
         }
-
-        // 4. Return the final JSON output.
         return res.status(200).json({
             provider,
             result: parsedResponse.data
